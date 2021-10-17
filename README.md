@@ -32,11 +32,11 @@ server {
 		proxy_pass http://uvicorn;
 	}
 
-  	location / {
+	location / {
 		proxy_redirect off;
 		proxy_buffering off;
 		proxy_pass http://uvicorn;
-    }
+	}
 }
 
 upstream uvicorn {
