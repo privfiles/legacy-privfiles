@@ -8,7 +8,7 @@ Source code for the onion service: `l3n6v6dm63frml22tlmzacnasvp7co7wylu4hhcs34uk
 
 ## Setup
 ### Git clone
-`git clone https://github.com/WardPearce/privfiles`
+`git clone https://github.com/privfiles/privfiles`
 ### Install Mongodb
 [community edition](https://www.mongodb.com/try/download/community)
 ### Install python requirements
