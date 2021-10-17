@@ -43,6 +43,8 @@ upstream uvicorn {
 	server unix:/tmp/uvicorn.sock;
 }
 ```
+### Adding fonts for recaptcha
+Add .ttf fonts to `privfiles/fonts` for recaptcha generation
 ### Configure
 `run.py`
 ```
