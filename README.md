@@ -2,6 +2,10 @@
 
 Source code for the onion service: `l3n6v6dm63frml22tlmzacnasvp7co7wylu4hhcs34ukxe7q56yb4tyd.onion`
 
+## Previews
+![home page](https://i.imgur.com/LouGjvI.png)
+![api page](https://i.imgur.com/SUHwwWU.png)
+
 ## Setup
 ### Git clone
 `git clone https://github.com/WardPearce/privfiles`
