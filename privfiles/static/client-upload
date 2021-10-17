@@ -1,0 +1,198 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+
+"""
+ENSURE THIS IS AN OFFICIAL CODE
+Use our PGP public key (you should never update this once saved)
+http://l3n6v6dm63frml22tlmzacnasvp7co7wylu4hhcs34ukxe7q56yb4tyd.onion/static/public
+
+step 1:
+review code
+
+step 2:
+install python 3.x
+
+step 3:
+pip3 install requests pillow colorama cryptography
+
+step 4:
+install / run tor as a proxy
+
+step 5:
+run client.py
+
+Windows tor proxy:
+CLEARNET!!: https://stackoverflow.com/questions/45972637/getting-tor-controlport-to-work/46303954#46303954
+
+Ubuntu tor proxy:
+1. sudo apt install tor
+2. service tor start
+3. service tor status
+"""
+
+
+# Importing needed modules
+import tkinter  # used for basic gui
+from tkinter import filedialog  # used to ask for file
+from sys import exit as sysExit  # used to kill script
+import requests as unsafeRequests  # used to make HTTP calls via tor proxy
+from requests.exceptions import ConnectionError  # raised when tor proxy doesn't work
+from io import BytesIO  # used to pass bytes to Image.open
+from PIL import Image  # used to render captcha using default image viewer
+from colorama import init, Fore  # used for terminal colours
+from cryptography.fernet import Fernet  # local fernet crypto
+from os.path import basename  # used to get the base name of the file being uploaded
+
+init()
+
+ROOT = tkinter.Tk()
+ROOT.withdraw()
+
+CURRENT_VERSION = "0.0.2"
+
+DEFAULT_HOST = "127.0.0.1"
+DEFAULT_PORT = "9050"
+
+SITE = "http://l3n6v6dm63frml22tlmzacnasvp7co7wylu4hhcs34ukxe7q56yb4tyd.onion/{page}"
+
+print("\n" * 350)
+
+print(
+    Fore.LIGHTBLUE_EX,
+    r"""
+             _        __ _ _
+            (_)      / _(_) |
+  _ __  _ __ ___   _| |_ _| | ___  ___
+ | '_ \| '__| \ \ / /  _| | |/ _ \/ __|
+ | |_) | |  | |\ V /| | | | |  __/\__ \
+ | .__/|_|  |_| \_/ |_| |_|_|\___||___/
+ | |
+ |_|
+    """,
+    Fore.RESET
+)
+print(SITE.format(page=""), "\n")
+print(f"truly private file sharing\nversion: {Fore.GREEN}{CURRENT_VERSION}{Fore.RESET}\n\n")
+
+
+host = input(f"Tor host [{DEFAULT_HOST}]: ")
+if not host:
+    host = DEFAULT_HOST
+
+port = input(f"Tor port [{DEFAULT_PORT}]: ")
+if not port:
+    port = DEFAULT_PORT
+
+
+ADDRESS = f"socks5h://{host}:{port}"
+
+REQUESTS = unsafeRequests.sessions.Session()
+REQUESTS.proxies = {
+    "http": ADDRESS,
+    "https": ADDRESS
+}
+REQUESTS.headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0"
+
+
+def captcha() -> str:
+    try:
+        resp = REQUESTS.get(SITE.format(page="generate-captcha"))
+    except ConnectionError:
+        sysExit(Fore.RED + "Unable to connect to tor proxy with given details. Is it running?")
+
+    if resp.status_code == 200:
+        image = Image.open(BytesIO(resp.content))
+    else:
+        sysExit(Fore.RED + f"error, status code {resp.status_code}")
+
+    image.show()
+    code = input("captcha code (view opened image, type 'hate' if its not readable): ")
+    image.close()
+
+    return code
+
+
+def upload_intent(file_path: str = None, custom_key: bytes = None):
+    print("\n" * 350)
+    if file_path:
+        print(Fore.RED + "Invalid captcha, try again", Fore.RESET)
+
+    if not custom_key:
+        invalid_key = True
+        while invalid_key:
+            print(Fore.YELLOW + "A URL-safe base64-encoded 32-byte key.", Fore.RESET)
+            custom_key_input = input("custom key [generate for me]: ")
+            if not custom_key_input:
+                custom_key = Fernet.generate_key()
+            else:
+                custom_key = custom_key_input.encode()
+
+            try:
+                fer = Fernet(custom_key)
+            except Exception:
+                print(Fore.RED + "Invalid key!")
+                invalid_key = True
+            else:
+                invalid_key = False
+    else:
+        fer = Fernet(custom_key)
+
+    print("please wait... downloading captcha")
+    given_code = captcha()
+    while given_code.lower() == "hate":
+        given_code = captcha()
+
+    if not file_path:
+        print("please select a file to upload (max 900 MB)")
+        file_path = filedialog.askopenfilename()
+        if not file_path:
+            sysExit(Fore.YELLOW + "No file selected")
+
+    with open(file_path, "rb") as f_:
+        resp = REQUESTS.post(
+            SITE.format(page="upload"),
+            files={"upload": (
+                basename(file_path), fer.encrypt(f_.read())
+            )},
+            data={"captcha": given_code, "expect_json": "true"},
+            timeout=None
+        )
+    if resp.status_code == 200:
+        resp_json = resp.json()["data"]
+        print(f"""
+{Fore.GREEN}Uploaded successful: {Fore.RESET}
+server-side password: {resp_json['password']}
+server-sided file id: {resp_json['file_id']}
+download page: {SITE.format(page='share/' + resp_json['file_id'])}
+
+local password: {custom_key.decode()}
+""")
+    else:
+        error = resp.json()['error']
+        if error == "captcha":
+            upload_intent(file_path=file_path, custom_key=custom_key)
+        else:
+            print(f"upload error: {resp.json()['error']}")
+
+
+upload_intent()
+
+
+REQUESTS.close()
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEDdup6GORm839wr0TnuH2yfyrvsUFAmFVrtYACgkQnuH2yfyr
+vsUXPQ/9GtEYfkWPQbchjUPK+4EQDs6jWBZjn+uPMLjuXPoOThMfRF8UE0mIg43+
+SSo5D1lXFJFz6fnvrCTmUvcnEbbqiIkQXkVRx/nYv0f51NJEzvcwd42FInaQpkEn
+O8hQelZb2EuB2C0UR69eCy5boHa2zIgKLNKYCrJNvM6obvgYq6ntFuaF9S4I5Rfo
+1wu0M4J7QHovYNbgnIwl1UYeQGD/xHrQTQ7sQW3bYRhA4293xKcHZpJzumDFPSEh
+V4vDAyZ41zCxMoy5MTz2MFLYE6c0bHtxy1BO7YeRJAEf67Xwga8gxLGpGNKn6/u+
+XSrgk9l4UtMb/aL67AudoNV0iWJRwT0d22LbM8GLb4YFpXBEjibt/svNeVgsuUZ0
+VZMrHtBgBdbQj2PLxUemJvm00p1Fzxje/JUm0y0+AnTxyNsRIs3w72wVtS+pAfA0
+uD4ccKvS/ePkJiq3sPjc4uW7M4Eq8ze2mG4S+20nrvN/Ne3gMAVl/UG8En/HoNcy
+oRHPO4ItMQN6TfEmYfclXoInnh6xTouX5yIyOsEP9aj14BQSloUm8GHNOqishjAi
+D50yEpjK42TG2sJ9w0/JMR3B1eINn4Ar0NWPiSPZFHK7g91MK2mCn/IKFnYx88Lp
+leljmxhuakm0ctVNDx2RnLQUkCrQDwRH1Rx8vY24Nw2HLtQ6Gf4=
+=sjBj
+-----END PGP SIGNATURE-----

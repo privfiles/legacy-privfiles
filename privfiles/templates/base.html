@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>privfiles | {% block title %}Truly private file sharing{% endblock %}</title>
+    <meta name="description" content="privfiles is a encrypted file storage and sharing service built for tor.">
+    <meta name="keywords" content="privfiles, priv, files, encrypted, file, storage, sharing, free, encrypt, share, mega, upload, cheap, bulk, leak">
+
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/styles.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
+        <div class="container-fluid"><a class="navbar-brand" href="/">privfiles</a>
+            <div class="navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/static/canary" target="_blank">canary</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/report">report</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/advertise">advertise with us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/zero">zero trust tool</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/storage-api">storage api</a></li>
+                </ul>
+                <a class="btn btn-primary action-button" role="button" href="/#upload">upload</a>
+            </div>
+        </div>
+    </nav>
+    <div class="alert alert-danger" id="js-on" style="display: none;color: #fff;" role="alert">
+        <strong>Javascript is enabled!</strong> Privfiles doesn't use any JS, we recommend disabling it for your own safety...
+    </div>
+    <div class="alert alert-primary" role="alert">
+        Hosting privfiles costs money!  please consider donating to <a href="/static/monero" target="_blank" style="color: #fff;">our monero address</a>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 col-xl-9">
+                {% block content %}{% endblock %}
+            </div>
+            <div class="col-md-4 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">advertisements</h5>
+                        <ul class="list-unstyled ads">
+                            <li>
+                                <a href="http://darktorhvabc652txfc575oendhykqcllb7bh7jhhsjduocdlyzdbmqd.onion" target="_blank">
+                                    <img class="advert" src="/static/img/banners/darktor.png">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://p23gulsmmneshdxabrbt3j2enmf2h4suynuujimjqjlklo4pprx6flid.onion/" target="_blank">
+                                    <img class="advert" src="/static/img/banners/GLOBAL TOR LINKS 400X100.gif">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://iyptqjjxwrinw2wxheags6cknm3ix5nhc222xdab2dtimym4huqmyaqd.onion/" target="_blank">
+                                    <img class="advert" src="/static/img/banners/hidden wiki.gif">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://paullzqj3ntil7vyar3gxeks7bz5haiteeehz5vdk5fadvtto7q7liid.onion/" target="_blank">
+                                    <img class="advert" src="/static/img/banners/paul-468x60.gif">
+                                </a>
+                            </li>                    
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+var jsTest = document.getElementById('js-on');
+jsTest.style.display = 'block';
+</script>

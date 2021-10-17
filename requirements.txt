@@ -1,0 +1,11 @@
+cryptography
+motor
+starlette
+jinja2
+backblaze>=0.1.1
+captcha
+uvicorn
+itsdangerous
+python-dotenv
+bcrypt
+python-multipart

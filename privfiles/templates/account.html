@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h3>Account details</h3>
+        <ul>
+            <li>Account active? {{ account['active'] }}</li>
+            <li>Storage Used: {{ account['used_data'] }} bytes</li>
+            <li>Storage Capacity: {{ account['data_cap'] }} bytes</li>
+            <li>Max upload: {{ account['max_upload'] }} bytes</li>
+            <li>Next payment: {{ account['next_payment'] }}</li>
+        </ul>
+        <h4>File IDs</h4>
+        {% if account['file_ids'] %}
+            <ol>
+                {% for file_id in account['file_ids'] %}
+                    <li>{{ file_id }}</li>
+                {% endfor %}
+            </ol>
+        {% else %}
+            <p>None</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

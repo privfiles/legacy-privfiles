@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        {% if account %}
+        <div class="share-owner">
+            <h3>Your account (DO NOT LEAVE / REFRESH PAGE)</h3>
+            <p>please save your username & password, passwords are hashed in our database</p>
+            <form>
+                <label class="form-label">username</label>
+                <input class="form-control" type="text" disabled="" value="{{ account['username'] }}">
+                <label class="form-label" style="margin-top: 15px;">password</label>
+                <input class="form-control" type="text" disabled="" value="{{ account['password'] }}">
+            </form>
+        </div>
+        {% endif %}
+
+        <h5>monthly pricing</h5>
+        <p style="font-style: italic;margin-bottom: 5px;">we recommend prepaying for multiple months to avoid losing API access.</p>
+        <ul>
+          <li>5 USD per 250 GB</li>
+          <li>900 MB max upload (additional 1 dollar per GB added to max upload)</li>
+          <li>25% off for prepayments over 2 months</li>
+          <li>Direct support & integration help</li>
+        </ul>
+
+        <p>please email us at privfiles@protonmail.com with your username for payment, payment method to be discussed (ideally monero)</p>
+  
+        <h5 style="margin-bottom: 0px;">generate account</h5>
+        <form action="/generate-account" method="post" style="width: 50%;">
+            {% include 'errors.html' %}
+            {% include 'captcha.html' %}
+            <button class="btn btn-primary" type="submit" style="margin-top: 20px;width: 100%;">generate account</button>
+        </form>
+
+        <a href="/account" target="_blank" style="font-style: italic;">have an account? login here</a>
+
+        <h5 style="margin-top: 20px;">authentication</h5>
+        <p>uses basic auth, user:password</p>
+        <div class="accordion">
+            <div class="accordion-item" style="margin-top: 20px;">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button">
+                    POST /api/upload
+                </button>
+              </h2>
+              <div class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <h4>multipart/form-data</h4>
+                    <h6>parameters</h6>
+                    <ul>
+                        <li>comment - max 1000 characters (optional)</li>
+                        <li>upload - file</li>
+                    </ul>
+                    <h4>response</h4>
+                    <p>{
+                        <br>
+                        "file_id": "max 90 characters",
+                        <br>
+                        "password": "max 50 characters"
+                        <br>
+                    }</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item" style="margin-top: 10px;">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button">
+                      POST /api/download/{file_id}
+                  </button>
+                </h2>
+                <div class="accordion-collapse collapse show">
+                  <div class="accordion-body">
+                    <h4>multipart/form-data</h4>
+                    <h6>parameters</h6>
+                    <ul>
+                        <li>password</li>
+                    </ul>
+                    <h4>response</h4>
+                    <p>stream of dencrypted bytes</p>
+                  </div>
+                </div>
+            </div>
+
+            <div class="accordion-item" style="margin-top: 10px;">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button">
+                    DELETE /api/delete/{file_id}
+                </button>
+              </h2>
+              <div class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                  <h4>multipart/form-data</h4>
+                  <h6>parameters</h6>
+                  <ul>
+                      <li>password</li>
+                  </ul>
+                  <h4>response</h4>
+                  <p>{"data": null, "error": false}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item" style="margin-top: 10px;">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button">
+                    GET /api/account
+                </button>
+              </h2>
+              <div class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                  <h4>response</h4>
+                  <p>
+                    {<br>
+                      "data": {<br>
+                        "storage_used": 5125.0,<br>
+                        "storage_capacity": 537000000000.0,<br>
+                        "max_upload": 943700000,<br>
+                        "next_payment": 1659009600.0,<br>
+                        "file_ids": []<br>
+                      },<br>
+                      "error": false<br>
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item" style="margin-top: 10px;">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button">
+                    GET /share/{file_id}
+                </button>
+              </h2>
+              <div class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                  e.g. redirect users to l3n6v6dm63frml22tlmzacnasvp7co7wylu4hhcs34ukxe7q56yb4tyd.onion/share/{file_id}
+                  for privfiles download page
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <h5 style="margin-top: 20px;">errors</h5>
+        <ul>
+            <li>500 - Internal error</li>
+            <li>402 - Key is not active (email us)</li>
+            <li>507 - Data cap reached</li>
+            <li>413 - File too large</li>
+            <li>400 - Password or link invalid</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

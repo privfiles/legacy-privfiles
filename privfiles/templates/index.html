@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-center align-items-center">
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                {% include 'errors.html' %}
+                <input required class="form-control" type="file" name="upload" id="upload">
+                <p style="margin: 0px;font-style: italic;text-align: end;font-size: .8em;">max 900 MB</p>
+                <textarea class="form-control" maxlength="1000" rows="3" name="comment" id="comment" style="width: 100%;" placeholder="optionally leave a comment to display on the download page, stored in plain text."></textarea>
+                <a href="/test-captcha" target="_blank" class="btn btn-dark" role="button" style="margin-top: 20px;width: 100%;">complete captcha</a>
+                <button class="btn btn-primary upload-button" type="submit" style="margin-top: 20px;width: 100%;"></button>
+            </form>
+        </div>
+        <div style="text-align: center; margin-top: 25px;">
+            <h5>don't trust us?</h5>
+            <p>read about our <a href="#security">security</a> or check out our <a href="/zero">zero trust tool</a></p>
+            <h5>wanna integrate privfiles?</h5>
+            <p>check out our <a href="/storage-api">storage api</a></p>
+        </div>
+    </div>
+</div>
+<article>
+    <h5 style="margin-top: 20px;">site message</h5>
+    <p>introduced quick share & improved upload captcha for large uploads - 10/16/2021</p>
+    <a href="/static/signature" target="_blank">signature</a>
+    <a href="/static/public" target="_blank" style="margin-left: 10px;">public key</a>
+    <h5 style="margin-top: 10px;" id="security">security</h5>
+    <p>all files are encrypted using fernet before being stored anywhere outside of memory, then the encryption key is stored encrypted by another password. This password is never stored sever-side, but is needed in order to download your file (this password will be given to you after upload).</p>
+    <h6 style="margin-top: 10px;">what can we see?</h6>
+    <p>we can see comments, total downloads &amp; privfiles' file ID associated with your file</p>
+    <h6 style="margin-top: 10px;">what cant we see?</h6>
+    <p>without your password we can NOT see your file name, content type, content length, chunking size and file content</p>
+    <p>can you trust us? no. you should encrypt files locally before uploading them here, use something like our <a href="/zero">zero trust tool</a> or 7zip</p>
+
+    <img src="/static/img/rotate-loading.gif" alt="used to make sure the loading gif is preloaded" style="display: none;">
+</article>
+{% endblock %}

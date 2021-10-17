@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+{% if correct %}
+    <div class="alert alert-success" style="color: #fff;" role="alert">
+        Captcha passed! You may close this tab & continue your upload.
+        Please ignore the 'complete captcha' button on the form!
+    </div>
+{% else %}
+    <div class="d-xl-flex justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center align-items-xl-center">
+        <form action="/test-captcha" method="post">
+            {% include 'errors.html' %}
+            {% include 'captcha.html' %}
+            <button class="btn btn-primary" type="submit" style="margin-top: 20px;width: 100%;">complete captcha</button>
+        </form>
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Admin page</h3>
+{% include 'errors.html' %}
+<form action="/admin/account-update" method="post">
+    <input required placeholder="username" type="text" class="form-control" id="username" name="username">
+    <input placeholder="data cap (in gb)" class="form-control" type="number" name="datacap" id="datacap">
+    <input placeholder="max upload (in mb)" class="form-control" type="number" name="maxupload" id="maxupload">
+    <input class="form-control" type="date" name="expires" id="expires">
+
+    <button class="btn btn-primary" type="submit" style="margin-top: 20px;width: 100%;">update</button>
+</form>
+{% endblock %}

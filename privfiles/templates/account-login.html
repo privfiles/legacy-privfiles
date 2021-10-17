@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-center align-items-center">
+            <form action="/account" method="post">
+                {% include 'errors.html' %}
+                <input required class="form-control" placeholder="username" type="text" name="username" id="username">
+                <input required class="form-control" placeholder="password" type="password" name="password" id="password">
+                <button class="btn btn-primary" type="submit" style="margin-top: 20px;width: 100%;">login</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

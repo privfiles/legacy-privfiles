@@ -1,0 +1,23 @@
+{% if error %}
+<div class="alert alert-warning" role="alert">
+        {% if error == 'captcha' %}
+            invalid captcha
+        {% elif error == 'comment' %}
+            comment is too long
+        {% elif error == 'size' %}
+            file too large
+        {% elif error == 'file-content' %}
+            no file content
+        {% elif error == 'fields' %}
+            required fields missing
+        {% elif error == 'password-or-link-or-deleted' %}
+            password or link incorrect. Maybe file got deleted?
+        {% elif error == 'invalid-user' %}
+            Username provided doesn't exist
+        {% elif error == 'login' %}
+            Password or username incorrect
+        {% else %}
+            unknown error
+        {% endif %}
+  </div>
+{% endif %}
