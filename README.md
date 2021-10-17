@@ -47,7 +47,7 @@ upstream uvicorn {
 Add .ttf fonts to `privfiles/fonts` for recaptcha generation
 ### Configure
 `run.py`
-```
+```py
 import uvicorn
 
 from privfiles import PrivFiles
