@@ -22,7 +22,7 @@ class DownloadDecryptFile(HTTPEndpoint):
 
         if not validate_captcha(request, form["captcha"]):
             return RedirectResponse(
-                f"/share/{file_id}?error=captcha",
+                f"/share/{file_id}/{form['password']}?error=captcha",
                 status_code=302
             )
 
