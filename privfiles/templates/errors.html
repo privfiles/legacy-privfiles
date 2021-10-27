@@ -10,6 +10,8 @@
             no file content
         {% elif error == 'fields' %}
             required fields missing
+        {% elif error == 'file-id' %}
+            file id invalid
         {% elif error == 'password-or-link-or-deleted' %}
             password or link incorrect. Maybe file got deleted?
         {% elif error == 'invalid-user' %}

@@ -3,10 +3,9 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.authentication import requires
 
-from cryptography.fernet import Fernet
-
 from ...responses import error_response, response
 from ...resources import Config, Sessions
+from ...helpers.delete import delete_upload
 
 
 class AccountAPI(HTTPEndpoint):
@@ -42,20 +41,9 @@ class DeleteAPI(HTTPEndpoint):
         if not result:
             return error_response("File ID not found", status_code=404)
 
-        file_result = await Sessions.mongo.files.find_one({
-            "file_id": request.path_params["file_id"]
-        })
-
-        try:
-            fer = Fernet(
-                Fernet(form["password"].encode()).decrypt(
-                    file_result["password"]
-                )
-            )
-
-            b2_file_id = (fer.decrypt(file_result["external_id"])).decode()
-        except Exception:
-            return error_response("Invalid password", status_code=400)
+        file_result, fer = await delete_upload(
+            form["password"], request.path_params["file_id"]
+        )
 
         await Sessions.mongo.api.update_one(
             {"username": request.user.display_name},
@@ -68,11 +56,5 @@ class DeleteAPI(HTTPEndpoint):
                 ))}
             }
         )
-
-        await Sessions.mongo.files.delete_one({
-            "file_id": request.path_params["file_id"]
-        })
-
-        await Sessions.bucket.file(b2_file_id).delete()
 
         return response()

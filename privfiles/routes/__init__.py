@@ -26,7 +26,7 @@ from .api.download import DownloadAPI
 from .api.misc import AccountAPI, DeleteAPI
 
 # Admin shit
-from .admin import AdminPage, AdminUpdateAccount
+from .admin import AdminPage, AdminUpdateAccount, AdminDeleteUpload
 
 # Errors
 from .errors import on_privfile_error, on_http_error, PrivFilesError
@@ -52,9 +52,11 @@ ROUTES = [
         StaticFiles(directory=path.join(Config.project_dir, "static")),
         name="static"
     ),
+    # /admin is considered a 'protected' route
     Mount("/admin", routes=[
         Route("/", AdminPage),
-        Route("/account-update", AdminUpdateAccount)
+        Route("/account-update", AdminUpdateAccount),
+        Route("/delete-upload", AdminDeleteUpload)
     ]),
     Mount("/api", routes=[
         Route("/upload", UploadAPI),

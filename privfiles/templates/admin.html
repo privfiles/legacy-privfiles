@@ -2,12 +2,21 @@
 {% block content %}
 <h3>Admin page</h3>
 {% include 'errors.html' %}
-<form action="/admin/account-update" method="post">
-    <input required placeholder="username" type="text" class="form-control" id="username" name="username">
-    <input placeholder="data cap (in gb)" class="form-control" type="number" name="datacap" id="datacap">
-    <input placeholder="max upload (in mb)" class="form-control" type="number" name="maxupload" id="maxupload">
+<h5>Update API account</h5>
+<form action="/admin/account-update" method="post" style="width: 60%;">
+    <input required placeholder="Username" type="text" class="form-control" id="username" name="username">
+    <input placeholder="Data cap (in gb)" class="form-control" type="number" name="datacap" id="datacap">
+    <input placeholder="Max upload (in mb)" class="form-control" type="number" name="maxupload" id="maxupload">
     <input class="form-control" type="date" name="expires" id="expires">
 
     <button class="btn btn-primary" type="submit" style="margin-top: 20px;width: 100%;">update</button>
+</form>
+
+<h5 style="margin-top: 1em;">Delete upload</h5>
+<form action="/admin/delete-upload" method="post" style="width: 60%;">
+    <input required type="text" placeholder="File ID" name="file-id" id="file-id" class="form-control">
+    <input required type="text" placeholder="Password" name="password" id="password" class="form-control">
+
+    <button class="btn btn-warning" type="submit" style="margin-top: 20px;width: 100%;">delete</button>
 </form>
 {% endblock %}

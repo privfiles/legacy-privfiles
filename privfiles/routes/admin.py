@@ -5,6 +5,8 @@ from starlette.responses import RedirectResponse
 from datetime import datetime
 
 from ..resources import Config, Sessions
+from ..errors import PasswordError, FileIdError
+from ..helpers.delete import delete_upload
 
 
 class AdminPage(HTTPEndpoint):
@@ -17,6 +19,25 @@ class AdminPage(HTTPEndpoint):
                 if "error" in request.query_params else None
             }
         )
+
+
+class AdminDeleteUpload(HTTPEndpoint):
+    async def post(self, request: Request) -> RedirectResponse:
+        form = await request.form()
+
+        if "password" not in form or "file-id" not in form:
+            return RedirectResponse("/admin?error=fields", status_code=302)
+
+        try:
+            await delete_upload(form["password"], form["file-id"])
+        except PasswordError:
+            return RedirectResponse(
+                "/admin?error=password-or-link-or-deleted", status_code=302
+            )
+        except FileIdError:
+            return RedirectResponse("/admin?error=file-id", status_code=302)
+        else:
+            return RedirectResponse("/admin", status_code=302)
 
 
 class AdminUpdateAccount(HTTPEndpoint):

@@ -39,3 +39,9 @@ class PasswordError(PrivFilesError):
     def __init__(self, msg: str = "Password or link invalid",
                  status_code: int = 400, *args: object) -> None:
         super().__init__(msg=msg, status_code=status_code, *args)
+
+
+class FileIdError(PrivFilesError):
+    def __init__(self, msg: str = "File ID not found",
+                 status_code: int = 404, *args: object) -> None:
+        super().__init__(msg=msg, status_code=status_code, *args)
