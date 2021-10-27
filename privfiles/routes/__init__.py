@@ -19,6 +19,7 @@ from .pages import (
 from .upload import UploadEncryptFile
 from .download import DownloadDecryptFile
 from .account import AccountGenerate, AccountPage
+from .premium import PremiumPage
 
 # API routes
 from .api.upload import UploadAPI
@@ -47,6 +48,9 @@ ROUTES = [
     Route("/generate-account", AccountGenerate),
     Route("/zero", ZeroPage),
     Route("/account", AccountPage),
+    Mount("/premium", routes=[
+        Route("/", PremiumPage)
+    ]),
     Mount(
         "/static",
         StaticFiles(directory=path.join(Config.project_dir, "static")),

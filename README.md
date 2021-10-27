@@ -16,7 +16,7 @@ Source code for the onion service: `l3n6v6dm63frml22tlmzacnasvp7co7wylu4hhcs34uk
 ### Nginx
 - [Restricting Access to Admin Page with Nginx](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/)
 - [Uvicorn deployment](https://www.uvicorn.org/deployment/)
-```
+```conf
 server {
 	listen 127.0.0.1:8080;
 	client_max_body_size 4G;
