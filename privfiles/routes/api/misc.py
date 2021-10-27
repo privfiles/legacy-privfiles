@@ -5,6 +5,7 @@ from starlette.authentication import requires
 
 from ...responses import error_response, response
 from ...resources import Config, Sessions
+from ...errors import FileIdError
 from ...helpers.delete import delete_upload
 
 
@@ -39,7 +40,7 @@ class DeleteAPI(HTTPEndpoint):
             "file_ids": {"$in": [request.path_params["file_id"]]}
         })
         if not result:
-            return error_response("File ID not found", status_code=404)
+            raise FileIdError()
 
         file_result, fer = await delete_upload(
             form["password"], request.path_params["file_id"]
