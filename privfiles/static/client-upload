@@ -1,7 +1,6 @@
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA256
 
-
 """
 ENSURE THIS IS AN OFFICIAL CODE
 Use our PGP public key (you should never update this once saved)
@@ -49,7 +48,7 @@ init()
 ROOT = tkinter.Tk()
 ROOT.withdraw()
 
-CURRENT_VERSION = "0.0.2"
+CURRENT_VERSION = "0.0.3"
 
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = "9050"
@@ -162,11 +161,8 @@ def upload_intent(file_path: str = None, custom_key: bytes = None):
         resp_json = resp.json()["data"]
         print(f"""
 {Fore.GREEN}Uploaded successful: {Fore.RESET}
-server-side password: {resp_json['password']}
-server-sided file id: {resp_json['file_id']}
-download page: {SITE.format(page='share/' + resp_json['file_id'])}
-
-local password: {custom_key.decode()}
+Share link (includes server-side password): {SITE.format(page='share/' + resp_json['file_id'] + '/' + resp_json['password'])}
+Local Password: {custom_key.decode()}
 """)
     else:
         error = resp.json()['error']
@@ -182,17 +178,17 @@ upload_intent()
 REQUESTS.close()
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEDdup6GORm839wr0TnuH2yfyrvsUFAmFVrtYACgkQnuH2yfyr
-vsUXPQ/9GtEYfkWPQbchjUPK+4EQDs6jWBZjn+uPMLjuXPoOThMfRF8UE0mIg43+
-SSo5D1lXFJFz6fnvrCTmUvcnEbbqiIkQXkVRx/nYv0f51NJEzvcwd42FInaQpkEn
-O8hQelZb2EuB2C0UR69eCy5boHa2zIgKLNKYCrJNvM6obvgYq6ntFuaF9S4I5Rfo
-1wu0M4J7QHovYNbgnIwl1UYeQGD/xHrQTQ7sQW3bYRhA4293xKcHZpJzumDFPSEh
-V4vDAyZ41zCxMoy5MTz2MFLYE6c0bHtxy1BO7YeRJAEf67Xwga8gxLGpGNKn6/u+
-XSrgk9l4UtMb/aL67AudoNV0iWJRwT0d22LbM8GLb4YFpXBEjibt/svNeVgsuUZ0
-VZMrHtBgBdbQj2PLxUemJvm00p1Fzxje/JUm0y0+AnTxyNsRIs3w72wVtS+pAfA0
-uD4ccKvS/ePkJiq3sPjc4uW7M4Eq8ze2mG4S+20nrvN/Ne3gMAVl/UG8En/HoNcy
-oRHPO4ItMQN6TfEmYfclXoInnh6xTouX5yIyOsEP9aj14BQSloUm8GHNOqishjAi
-D50yEpjK42TG2sJ9w0/JMR3B1eINn4Ar0NWPiSPZFHK7g91MK2mCn/IKFnYx88Lp
-leljmxhuakm0ctVNDx2RnLQUkCrQDwRH1Rx8vY24Nw2HLtQ6Gf4=
-=sjBj
+iQIzBAEBCAAdFiEEDdup6GORm839wr0TnuH2yfyrvsUFAmFrkXAACgkQnuH2yfyr
+vsWm3w//ef1CA3H+Maisvrg0bP6LzAzMh8PdumjfM6DTzEN5u8lScnf5y1LICIJ1
+QWY1CXVTSBSQK/bGZy+P5jXjPtTj+5g5kyb+OssH2EELQKO0q6CAclNrSw4MgimD
+yzmTWGAr2iJsRNWfIcVEeBqwjAVGLtjevsOyRoejgkySI/s/RZZkVDxCbR1Kwn9M
+KSnXG0emRCWfO5SL05Srx5kYgA2kdhJvcGkWmwGpkm1a7Cdz/usSYR4tUKu2sChT
+uNNsFHnEnVvUsSRGybSgGxaphP5f5nhiyRO3yQC3Z23teoY51M6fpRXVMrnkaJWE
+UgeFpGvNloDxD2S0Hmwly237ezLrHqOFF5c2872HoXJ7uizYpyP8Bw7Rua2tbd0V
+SFDCaThyqpAPkoByVBvXUs1gUZLEk9RjpORVLbSQAQoAkFs728NVe200Hu3xLjpL
+GTKAAYpRugLLNOIw1+y5YYiLewoZI3c+++CH0BE2fnm/dDQLODz4lrRT8Qwtw3OD
+Ttl8f7sCj0aeO15bmxl1gczO9Ssd8ZRN0OrDfqIpTausSEexUhyvs4UaES2DI/N/
+3YJYr3muAH7Ophy10Olb//4ftt/aEjwkXsh9hNmzX3UAjy+Eq81Kme2H70f/vO0e
+na8dDfcwlhA+TH+be7R0fx2uwjtv0G1OOYg40I5R1FbRLZilyUw=
+=2vWJ
 -----END PGP SIGNATURE-----
