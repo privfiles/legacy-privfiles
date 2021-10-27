@@ -40,6 +40,31 @@ class AdminDeleteUpload(HTTPEndpoint):
             return RedirectResponse("/admin", status_code=302)
 
 
+class AdminUpdateKey(HTTPEndpoint):
+    async def post(self, request: Request) -> RedirectResponse:
+        form = await request.form()
+
+        if "premium-key" not in form or "max-uploads" not in form:
+            return RedirectResponse("/admin?error=fields", status_code=302)
+
+        if await Sessions.mongo.premium.count_documents(
+                {"key": form["premium-key"]}) == 0:
+            return RedirectResponse(
+                "/admin?error=key", status_code=302
+            )
+
+        await Sessions.mongo.premium.update_one(
+            {"key": form["premium-key"]},
+            {"$set": {
+                "active": True,
+                "max_uploads": int(form["max-uploads"]),
+                "uploads": 0
+            }}
+        )
+
+        return RedirectResponse("/admin", status_code=302)
+
+
 class AdminUpdateAccount(HTTPEndpoint):
     async def post(self, request: Request) -> RedirectResponse:
         form = await request.form()

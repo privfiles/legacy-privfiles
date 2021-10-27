@@ -6,12 +6,17 @@
             <form action="/upload" method="post" enctype="multipart/form-data">
                 {% include 'errors.html' %}
                 <input required class="form-control" type="file" name="upload" id="upload">
-                <p style="margin: 0px;font-style: italic;text-align: end;font-size: .8em;">max 900 MB</p>
+                <p style="margin: 0px;font-style: italic;text-align: end;font-size: .8em;">
+                    max
+                    {% if 'premium_key' not in request.session %}
+                        900 MB
+                    {% else %}
+                        4 GB
+                    {% endif %}
+                </p>
                 <textarea class="form-control" maxlength="1000" rows="3" name="comment" id="comment" style="width: 100%;" placeholder="optionally leave a comment to display on the download page, stored in plain text."></textarea>
-                {% if 'premium' not in request.query_params %}
+                {% if 'premium_key' not in request.session %}
                     <a href="/test-captcha" target="_blank" class="btn btn-dark" role="button" style="margin-top: 20px;width: 100%;">complete captcha</a>
-                    <h5 style="text-align: center;margin: 0;">or</h5>
-                    <input type="password" name="premium-key" id="premium-key" placeholder="premium key (optional)" class="form-control text-center">
                 {% endif %}
                 <button class="btn btn-primary upload-button" type="submit" style="margin-top: 20px;width: 100%;"></button>
             </form>

@@ -18,3 +18,4 @@ class Config:
     template = Jinja2Templates(directory=path.join(project_dir, "templates"))
     read_size = 5000024
     max_size = 943700000
+    premium_size = 4295000000

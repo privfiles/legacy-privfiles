@@ -27,7 +27,9 @@ from .api.download import DownloadAPI
 from .api.misc import AccountAPI, DeleteAPI
 
 # Admin shit
-from .admin import AdminPage, AdminUpdateAccount, AdminDeleteUpload
+from .admin import (
+    AdminPage, AdminUpdateAccount, AdminDeleteUpload, AdminUpdateKey
+)
 
 # Errors
 from .errors import on_privfile_error, on_http_error, PrivFilesError
@@ -48,9 +50,7 @@ ROUTES = [
     Route("/generate-account", AccountGenerate),
     Route("/zero", ZeroPage),
     Route("/account", AccountPage),
-    Mount("/premium", routes=[
-        Route("/", PremiumPage)
-    ]),
+    Route("/premium", PremiumPage),
     Mount(
         "/static",
         StaticFiles(directory=path.join(Config.project_dir, "static")),
@@ -60,7 +60,8 @@ ROUTES = [
     Mount("/admin", routes=[
         Route("/", AdminPage),
         Route("/account-update", AdminUpdateAccount),
-        Route("/delete-upload", AdminDeleteUpload)
+        Route("/delete-upload", AdminDeleteUpload),
+        Route("/premium-update", AdminUpdateKey)
     ]),
     Mount("/api", routes=[
         Route("/upload", UploadAPI),

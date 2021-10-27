@@ -32,9 +32,19 @@
                 </div>
             </div>
         </nav>
-        <div class="alert alert-primary" role="alert">
-            Hosting privfiles costs money!  please consider donating to <a href="/static/monero" target="_blank" style="color: #fff;">our monero address</a>
-        </div>
+        {% if 'premium_max' in request.session and request.session['premium_max'] %}
+            <div class="alert alert-warning" style="color: #fff;" role="alert">
+                Your premium has reached max uploads, go to the <a href="/premium">premium page</a> to get more uploads
+            </div>
+        {% elif 'premium_key' not in request.session %}
+            <div class="alert alert-primary" role="alert">
+                Hosting privfiles costs money!  please consider donating to <a href="/static/monero" target="_blank" style="color: #fff;">our monero address</a>
+            </div>
+        {% else %}
+            <div class="alert alert-success" role="alert">
+                Privfiles premium currently active!
+            </div>
+        {% endif %}
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8 col-xl-9">

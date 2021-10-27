@@ -25,7 +25,10 @@
                 {% else %}
                     <input class="form-control" type="hidden" value="{{ request.path_params['share_password'] }}" id="password" name="password">
                 {% endif %}
-                {% include 'captcha.html' %}
+                {% if 'premium_key' not in request.session %}
+                    <div style="margin-top: 20px;"></div>
+                    {% include 'captcha.html' %}
+                {% endif %}
                 <button class="btn btn-primary" type="submit" style="margin-top: 20px;width: 100%;">download file</button>
             </form>
         </div>

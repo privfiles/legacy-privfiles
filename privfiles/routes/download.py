@@ -14,13 +14,16 @@ class DownloadDecryptFile(HTTPEndpoint):
         form = await request.form()
         file_id = request.path_params["file_id"]
 
-        if "password" not in form or "captcha" not in form:
+        if ("password" not in form or
+            ("premium_key" not in request.session
+                and "captcha" not in form)):
             return RedirectResponse(
                 f"/share/{file_id}?error=fields",
                 status_code=302
             )
 
-        if not validate_captcha(request, form["captcha"]):
+        if ("premium_key" not in request.session
+                and not validate_captcha(request, form["captcha"])):
             return RedirectResponse(
                 f"/share/{file_id}/{form['password']}?error=captcha",
                 status_code=302

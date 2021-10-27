@@ -12,6 +12,14 @@
     <button class="btn btn-primary" type="submit" style="margin-top: 20px;width: 100%;">update</button>
 </form>
 
+<h5 style="margin-top: 1em;">Update premium key</h5>
+<form action="/admin/premium-update" method="post" style="width: 60%;">
+    <input required placeholder="Key" type="text" class="form-control" id="premium-key" name="premium-key">
+    <input required placeholder="Max uploads" class="form-control" type="number" name="max-uploads" id="max-uploads">
+
+    <button class="btn btn-primary" type="submit" style="margin-top: 20px;width: 100%;">update</button>
+</form>
+
 <h5 style="margin-top: 1em;">Delete upload</h5>
 <form action="/admin/delete-upload" method="post" style="width: 60%;">
     <input required type="text" placeholder="File ID" name="file-id" id="file-id" class="form-control">

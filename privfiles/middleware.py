@@ -2,6 +2,7 @@ import base64
 import binascii
 import bcrypt
 
+from starlette.requests import Request
 from starlette.authentication import (
     AuthenticationBackend, AuthenticationError,
     SimpleUser, AuthCredentials
@@ -13,8 +14,21 @@ AUTH_ERROR = "Invalid basic auth credentials"
 
 
 class BasicAuthBackend(AuthenticationBackend):
-    async def authenticate(self, request):
+    async def authenticate(self, request: Request):
         if "Authorization" not in request.headers:
+            if "key" in request.query_params:
+                result = await Sessions.mongo.premium.find_one({
+                    "key": request.query_params["key"],
+                    "active": True
+                })
+                if not result:
+                    return
+
+                request.session["premium_max"] = (
+                    result["uploads"] >= result["max_uploads"]
+                )
+                request.session["premium_key"] = result["key"]
+
             return
 
         auth = request.headers["Authorization"]

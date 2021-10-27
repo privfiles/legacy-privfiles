@@ -1,4 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="card">
+    <div class="card-body">
+        {% if premium_key %}
+            <div class="share-owner">
+                <h3>Your premium key (DO NOT LEAVE / REFRESH PAGE)</h3>
+                <p>please store this key somewhere safe, if you lose if you'll no longer be able to access your premium!</p>
+                <form>
+                    <label class="form-label">premium key</label>
+                    <input class="form-control" type="text" disabled="" value="{{ premium_key }}">
+                </form>
+            </div>
+        {% endif %}
 
+        <h4 class="card-title">privfiles premium</h4>
+        <ul>
+            <li>5 USD per 500 uploads</li>
+            <li>max 4 GB uploads</li>
+            <li>no time limit</li>
+            <li>no download limit</li>
+            <li>no key & file association</li>
+            <li>captcha free uploads & downloads</li>
+        </ul>
+
+        <p>please email us at privfiles@protonmail.com with your premium key for payment, payment method to be discussed (ideally monero)</p>
+
+        <h5 style="margin-bottom: 0px;">generate premium key</h5>
+        <form action="/premium" method="post" style="width: 50%;">
+            {% include 'errors.html' %}
+            {% include 'captcha.html' %}
+            <button class="btn btn-primary" type="submit" style="margin-top: 20px;width: 100%;">generate premium key</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

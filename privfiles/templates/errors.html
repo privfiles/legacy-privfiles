@@ -16,6 +16,8 @@
             password or link incorrect. Maybe file got deleted?
         {% elif error == 'invalid-user' %}
             Username provided doesn't exist
+        {% elif error == 'key' %}
+            Premium key doesn't exist
         {% elif error == 'login' %}
             Password or username incorrect
         {% else %}

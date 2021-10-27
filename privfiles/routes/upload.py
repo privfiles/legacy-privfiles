@@ -9,6 +9,7 @@ from ..errors import (
     CommentLengthError, ContentLengthError, ZeroContentLengthError
 )
 from ..responses import error_response, response
+from ..resources import Sessions, Config
 
 
 class UploadEncryptFile(HTTPEndpoint):
@@ -27,18 +28,40 @@ class UploadEncryptFile(HTTPEndpoint):
                 RedirectResponse("/?error=fields", status_code=302)
             )
 
-        if ("captcha_completed" not in request.session
-                or not request.session["captcha_completed"]):
-            return (
-                error_response("captcha") if expects_json else
-                RedirectResponse("/?error=captcha", status_code=302)
+        if "premium_key" not in request.session:
+            if ("captcha_completed" not in request.session
+                    or not request.session["captcha_completed"]):
+                return (
+                    error_response("captcha") if expects_json else
+                    RedirectResponse("/?error=captcha", status_code=302)
+                )
+
+            request.session["captcha_completed"] = False
+
+            max_size = Config.max_size
+        else:
+            result = await Sessions.mongo.premium.find_one({
+                "key": request.session["premium_key"]
+            })
+
+            # If next upload will be above max uploads
+            if result["uploads"] > result["max_uploads"]:
+                request.session["premium_max"] = True
+                request.session.pop("premium_key")
+
+            await Sessions.mongo.premium.update_one(
+                {"key": request.session["premium_key"]},
+                {
+                    "$inc": {"uploads": 1}
+                },
+                upsert=True
             )
 
-        request.session["captcha_completed"] = False
+            max_size = Config.premium_size
 
         try:
             file_id, user_key, _ = await upload_file(
-                form, local_dencrypt=expects_json
+                form, local_dencrypt=expects_json, max_upload=max_size
             )
         except CommentLengthError:
             return (
