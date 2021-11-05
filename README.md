@@ -2,6 +2,13 @@
 
 Source code for the onion service: `l3n6v6dm63frml22tlmzacnasvp7co7wylu4hhcs34ukxe7q56yb4tyd.onion`
 
+## ToDo
+- Add unit tests
+- Allow configuring mongodb for no deafult settings  
+- Add flake8, pyright & unit test workflow
+- Implement site message / canary updating via the admin panel (PGP still handled locally)
+- Consider adding optional javascript for local browser encryption? Maybe a more soild GUI applicaiton for privfiles?
+
 ## Previews
 ![home page](https://i.imgur.com/LouGjvI.png)
 ![api page](https://i.imgur.com/SUHwwWU.png)
