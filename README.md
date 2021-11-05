@@ -1,4 +1,4 @@
-## Privfiles - Encrypted file storage using Fernet with zero Javascript
+# Privfiles - Encrypted file storage using Fernet with zero Javascript
 
 Source code for the onion service: `l3n6v6dm63frml22tlmzacnasvp7co7wylu4hhcs34ukxe7q56yb4tyd.onion`
 
