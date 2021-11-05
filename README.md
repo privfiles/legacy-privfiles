@@ -86,6 +86,9 @@ if __name__ == "__main__":
 ### Running
 Use something like [pm2](https://pm2.keymetrics.io) to run `run.py` & `api_task.py` in the background.
 
+### Checks
+- Ensure `/admin/` isn't accessible without correct basic auth provided. 
+
 
 ## Thanks to
 - [cryptography](https://pypi.org/project/cryptography/) by The Python Cryptographic Authority and individual contributors
