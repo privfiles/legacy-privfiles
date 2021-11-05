@@ -2,7 +2,7 @@
 
 Source code for the onion service: `l3n6v6dm63frml22tlmzacnasvp7co7wylu4hhcs34ukxe7q56yb4tyd.onion`
 
-## ToDo
+## Ideas / Todo
 - Add unit tests
 - Allow configuring mongodb for no deafult settings  
 - Add flake8, pyright & unit test workflow
