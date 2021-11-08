@@ -12,7 +12,8 @@ class CaptchaGen(HTTPEndpoint):
         captcha = Sessions.captcha.gen_captcha_image(
             difficult_level=Config.captcha.difficult_level,
             multicolor=Config.captcha.multicolor,
-            margin=Config.captcha.margin
+            margin=Config.captcha.margin,
+            chars_mode=Config.captcha.chars_mode
         )
 
         request.session["captcha"] = captcha["characters"]

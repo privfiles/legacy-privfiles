@@ -22,7 +22,8 @@ class B2Settings:
 
 class CaptchaSettings:
     def __init__(self, size: int = 1, difficult_level: int = 3,
-                 multicolor: bool = True, margin: bool = False) -> None:
+                 multicolor: bool = True, margin: bool = False,
+                 chars_mode: str = "nums") -> None:
         """Captcha settings.
 
         Parameters
@@ -35,12 +36,15 @@ class CaptchaSettings:
             by default True
         margin : bool, optional
             by default False
+        chars_mode : bool, optional
+            by default "nums"
         """
 
         self.size = size
         self.difficult_level = difficult_level
         self.multicolor = multicolor
         self.margin = margin
+        self.chars_mode = chars_mode
 
 
 class MongoSettings:
