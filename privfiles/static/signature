@@ -1,20 +1,20 @@
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA256
 
-Introduced new privfiles premium! - 10/27/2021
+Added fancy upload progress streaming, changed how file keys are handled & remove client support (being re-written, use 7zip for now) - 11/09/2021
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEDdup6GORm839wr0TnuH2yfyrvsUFAmF4zbgACgkQnuH2yfyr
-vsV2rA//cDta42zTJ/y3rXVel3IRYbR7jaIdAV1xOzEJeqjzFO8sddIenAzEU8du
-x6Le2NMDgak6GfL561bjVrfV0yYGNnIPXd1uHnJWLX01kvcHJ6j/c0RojvF0O/4F
-0DHcTO8aDXyN9HCgnzxdKGehCDx5/kgXGMDB7LMVFZW5WHUqvKjqhtiEclj4uBz9
-kJVkqZrTd18iTX14GzMWS/4GSRSNn2ypUbj1kcDM4IdJVUOsFvTgDeWN5aFRK/6O
-QqJe99PdnsTfcUQ5XIW4YVm4fPGYH8hTn5E4/6KIvBErErgry4qLxQz31d3d3VrR
-CKPnYWX+W6bNDsYm9IExtz9FugQAh58CR8DpTDI9mUOzuANj/jCMwTRocx3EFszd
-SAliX4JewVM7b7CSpT39fFKlbg9lttRFaSeoqyciOGG5Cv4SioUewxxLR699/6cb
-Rfb2+jBk9/5Vhv7gD6uzTRwv8TwfiCphQwVPBklt183vvcH8fUNzWcj2mgFum4JY
-LV4vZ/qD4hAbqCYP+e40GY0HYvRvu/W5FumiC1NgySkPe25ehW25SymbofvgjBjw
-/mmfYl83owFiftwEEWkGr5B1ryN63BHfO2KEBNjNsRMDibRzAh3G8RLeq9GegReB
-FhxtLgXettDB5BsFUjWxULvM9I4c6ZAqq/baCGIl0KMxsUPVpLM=
-=vyZd
+iQIzBAEBCAAdFiEEDdup6GORm839wr0TnuH2yfyrvsUFAmGJKvAACgkQnuH2yfyr
+vsXDoBAAkYKsb2olGZMqM+EnfD63HtPD5VcRSY9ctifFepf016O+Ue+EQeu5rztE
+mFb+51H0ZKU4aLQuQXsd8J99ipNoiLg/VOb0NNGNM7JmkadGiDUzTLQbSrWAtdE7
+rnjh0Or4cMgl4jFZUzgnpTGnt2jX+OhfXRQiICRGf3Q7E1bOoG5u1puUQA2BxBAV
+2sFlI7BL2hBVfUCEncqDammUzHIZY+StlmMYlXUHVQ6CwELbPrZlJux3TP7Knf7/
+BvgEzMb6qSr/ow5UdkedAKm5uBFYAL/d2P1IgQzfS3fGm2h1pfLRYsr+aL4PAxLH
+QRosqYjykT16TG2q51tzPizGUo4hA+uuGfzaSHvL0/OqnNw/Kr6ZaHUfqqMar2Uw
++F6p2VuMySZvvwIYKBRzt0Arh3Ru+0yz9K7GkRdrrIZnjzYKyEI0gHoYunbeuQPz
+XSsnL2Uh1qH64TFKLIn+zHOu4aUOGpm8XmjaRbX2MqR1F/88RnayvpViZNwxjb2T
+4HchMr9HOjPByr2O+LjP+illNyyAwx1cAwKyNeU4/9vwt9OP/IL/KmGyq2PgZyP/
+QtKJkOHhgXR3O49C2ogIgAOTa9hu/LNEAlF0mGgVJ9uJZhqTGyWydjemkDBJFFG/
+r327/AsQAkv3B+qDQPfsWGyUWkTQtTRefDvL7bUJftcw9tfDglQ=
+=iPhh
 -----END PGP SIGNATURE-----
