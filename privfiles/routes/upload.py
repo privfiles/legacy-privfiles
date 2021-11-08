@@ -38,7 +38,7 @@ class UploadEncryptFile(HTTPEndpoint):
 
             request.session["captcha_completed"] = False
 
-            max_size = Config.max_size
+            max_size = Config.size.max_size
         else:
             result = await Sessions.mongo.premium.find_one({
                 "key": request.session["premium_key"]
@@ -57,7 +57,7 @@ class UploadEncryptFile(HTTPEndpoint):
                 upsert=True
             )
 
-            max_size = Config.premium_size
+            max_size = Config.size.premium_size
 
         try:
             file_id, user_key, _ = await upload_file(

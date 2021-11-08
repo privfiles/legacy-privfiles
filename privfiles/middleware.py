@@ -59,7 +59,7 @@ class BasicAuthBackend(AuthenticationBackend):
 
         request.state.max_upload = (
             result["max_upload"]
-            if result["max_upload"] else Config.max_size
+            if result["max_upload"] else Config.size.max_size
         )
 
         return AuthCredentials(["authenticated"]), SimpleUser(username)

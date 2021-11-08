@@ -3,7 +3,7 @@ motor
 starlette
 jinja2
 backblaze>=0.1.1
-captcha
+multicolorcaptcha
 uvicorn
 itsdangerous
 python-dotenv

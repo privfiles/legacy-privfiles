@@ -8,14 +8,11 @@ from starlette.middleware.authentication import AuthenticationMiddleware
 
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from captcha.image import ImageCaptcha
-
-from os import listdir
-from os import path
+from multicolorcaptcha import CaptchaGenerator
 
 from .resources import Sessions, Config
 from .key_loader import KeyLoader
-from .settings import B2Settings
+from .settings import B2Settings, CaptchaSettings, MongoSettings, SizeSettings
 from .middleware import BasicAuthBackend
 
 from .routes import ROUTES, ERROR_HANDLERS
@@ -23,8 +20,27 @@ from .routes.errors import on_auth_error
 
 
 class PrivFiles(Starlette):
-    def __init__(self, backblaze_settings: B2Settings, **kwargs) -> None:
+    def __init__(self, backblaze_settings: B2Settings,
+                 captcha_settings: CaptchaSettings = CaptchaSettings(),
+                 mongo_settings: MongoSettings = MongoSettings(),
+                 size_settings: SizeSettings = SizeSettings(),
+                 **kwargs) -> None:
+        """Used to configure privfiles.
+
+        Parameters
+        ----------
+        backblaze_settings : B2Settings
+        captcha_settings : CaptchaSettings, optional
+            by default CaptchaSettings()
+        mongo_settings : MongoSettings, optional
+            by default MongoSettings()
+        """
+
         self.__backblaze_settings = backblaze_settings
+        self.__mongo_settings = mongo_settings
+
+        Config.captcha = captcha_settings
+        Config.size = size_settings
 
         # Needed middlewares
         middlewares = [
@@ -83,20 +99,16 @@ class PrivFiles(Starlette):
         """Starts sessions
         """
 
-        Sessions.captcha = ImageCaptcha(fonts=[
-            path.join(Config.project_dir, "fonts", font) for font in
-            listdir(path.join(Config.project_dir, "fonts"))
-            if font.lower().endswith(".ttf")
-        ], width=250, height=70)
+        Sessions.captcha = CaptchaGenerator(Config.captcha.size)
 
-        mongo = AsyncIOMotorClient()
+        mongo = AsyncIOMotorClient(self.__mongo_settings.connection)
 
         try:
             await mongo.server_info()
         except Exception:
             sys.exit("No mongo connection")
 
-        Sessions.mongo = mongo.privfiles
+        Sessions.mongo = mongo[self.__mongo_settings.database]
 
         self.__b2 = backblaze.Awaiting(
             self.__backblaze_settings.key_id,

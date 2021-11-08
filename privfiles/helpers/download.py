@@ -17,7 +17,7 @@ async def decrypt_file(upload_chunk_size: int,
     file_ = Sessions.bucket.file(external_id)
 
     model = await file_.get()
-    if model.content_length < Config.read_size:
+    if model.content_length < Config.size.read_size:
         yield file_fer.decrypt(await file_.download())
     else:
         next_index = upload_chunk_size

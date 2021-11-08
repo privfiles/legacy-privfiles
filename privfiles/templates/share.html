@@ -3,19 +3,19 @@
 <div class="card">
     <div class="card-body">
         {% if password %}
-        <div class="share-owner">
-            <h3>Your password (DO NOT LEAVE / REFRESH PAGE)</h3>
-            <p>your file has been encrypted and uploaded to privfiles, please save the password below &amp; share link somewhere safe if you wish to ever be able to download the file again.&nbsp;</p>
-            <form>
-                <label>password</label>
-                <input class="form-control" type="text" disabled="" value="{{ password }}">
-                <label style="margin-top: 15px;">share link</label>
-                <input class="form-control" type="text" disabled="" value="l3n6v6dm63frml22tlmzacnasvp7co7wylu4hhcs34ukxe7q56yb4tyd.onion/share/{{ request.path_params['file_id'] }}">
-                <label style="margin-top: 15px;">Quick share (Includes password)</label>
-                <p style="font-size: .7em;font-style: italic;margin-bottom: 0px;">Anyone with this link can download the file & view its contents</p>
-                <input class="form-control" type="text" disabled="" value="l3n6v6dm63frml22tlmzacnasvp7co7wylu4hhcs34ukxe7q56yb4tyd.onion/share/{{ request.path_params['file_id'] }}/{{ password }}">
-            </form>
-        </div>
+            <div class="share-owner">
+                <h3>Your password (DO NOT LEAVE / REFRESH PAGE)</h3>
+                <p>your file has been encrypted and uploaded to privfiles, please save the password below &amp; share link somewhere safe if you wish to ever be able to download the file again.&nbsp;</p>
+                <form>
+                    <label>password</label>
+                    <input class="form-control" type="text" disabled="" value="{{ password }}">
+                    <label style="margin-top: 15px;">share link</label>
+                    <input class="form-control" type="text" disabled="" value="l3n6v6dm63frml22tlmzacnasvp7co7wylu4hhcs34ukxe7q56yb4tyd.onion/share/{{ request.path_params['file_id'] }}">
+                    <label style="margin-top: 15px;">Quick share (Includes password)</label>
+                    <p style="font-size: .7em;font-style: italic;margin-bottom: 0px;">Anyone with this link can download the file & view its contents</p>
+                    <input class="form-control" type="text" disabled="" value="l3n6v6dm63frml22tlmzacnasvp7co7wylu4hhcs34ukxe7q56yb4tyd.onion/share/{{ request.path_params['file_id'] }}/{{ password }}">
+                </form>
+            </div>
         {% endif %}
         <div class="d-xl-flex justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center align-items-xl-center">
             <form action="/download/{{ request.path_params['file_id'] }}" method="post">
@@ -33,21 +33,21 @@
             </form>
         </div>
         {% if local_dencrypt %}
-        <h4>local dencrypt required</h4>
-        <p>This file has been uploaded with our zero trust tool, this means after downloading the file with the server-side password you must dencrypt locally with our 'download' client.</p>
-        <p>please review the 'download' client before running it, requires python 3.x - <a href="/static/client-download" target="_blank">'download' client</a></p>
+            <h4>local dencrypt required</h4>
+            <p>This file has been uploaded with our zero trust tool, this means after downloading the file with the server-side password you must dencrypt locally with our 'download' client.</p>
+            <p>please review the 'download' client before running it, requires python 3.x - <a href="/static/client-download" target="_blank">'download' client</a></p>
         {% endif %}
 
-        <h4>total downloads: {{ downloads }}</h4>
+        <h4>{{ downloads }} total downloads</h4>
 
         <h4>comment</h4>
         {% if comment %}
-        <p>everything in the box below was a comment left by the uploader, beware of scams...</p>
-        <div class="comment">
-            <p>{{ comment }}</p>
-        </div>
+            <p>everything in the box below was a comment left by the uploader, beware of scams...</p>
+            <div class="comment">
+                <p>{{ comment }}</p>
+            </div>
         {% else %}
-        <p>no comment left by uploader</p>
+            <p>no comment left by uploader</p>
         {% endif %}
     </div>
 </div>

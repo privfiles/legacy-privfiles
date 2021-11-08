@@ -20,7 +20,7 @@ class AccountAPI(HTTPEndpoint):
             "storage_used": result["used_data"],
             "storage_capacity": result["data_cap"],
             "max_upload": result["max_upload"]
-            if result["max_upload"] else Config.max_size,
+            if result["max_upload"] else Config.size.max_size,
             "next_payment": result["next_payment"].timestamp()
             if result["next_payment"] else None,
             "file_ids": result["file_ids"]

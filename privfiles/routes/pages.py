@@ -73,6 +73,9 @@ class SharePage(HTTPEndpoint):
                 request.session["user"]):
             password = request.session["user"][request.path_params["file_id"]]
             request.session["user"].pop(request.path_params["file_id"])
+
+            request.session["user"] = request.session["user"]
+            print(request.session["user"])
         else:
             password = None
 

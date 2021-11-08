@@ -2,25 +2,26 @@ from starlette.endpoints import HTTPEndpoint
 from starlette.requests import Request
 from starlette.responses import Response
 
-import string
-import random
+from io import BytesIO
 
-from ..resources import Sessions
+from ..resources import Sessions, Config
 
 
 class CaptchaGen(HTTPEndpoint):
     async def get(self, request: Request) -> Response:
-        text = ''.join(random.choices(
-            string.ascii_lowercase
-            + string.digits
-            + "@&%$#",
-            k=6
-        ))
+        captcha = Sessions.captcha.gen_captcha_image(
+            difficult_level=Config.captcha.difficult_level,
+            multicolor=Config.captcha.multicolor,
+            margin=Config.captcha.margin
+        )
 
-        request.session["captcha"] = text
+        request.session["captcha"] = captcha["characters"]
         request.session["captcha_completed"] = False
 
+        buffer = BytesIO()
+        captcha["image"].save(buffer, format="PNG")
+
         return Response(
-            Sessions.captcha.generate(text).getvalue(),
+            buffer.getvalue(),
             media_type="image/png"
         )

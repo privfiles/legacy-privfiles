@@ -17,9 +17,37 @@ from ..errors import (
 )
 
 
-async def upload_file(form: FormData, max_upload: int = Config.max_size,
+async def upload_file(form: FormData, max_upload: int = None,
                       local_dencrypt: bool = False,
                       ) -> Tuple[str, bytes, int]:
+    """Used to upload encrypted data.
+
+    Parameters
+    ----------
+    form : FormData
+    max_upload : int, optional
+        If None uses default max_size, by default None
+    local_dencrypt : bool, optional
+        by default False
+
+    Returns
+    -------
+    str
+        file_id
+    bytes
+        fernet key
+    int
+        content length
+
+    Raises
+    ------
+    CommentLengthError
+    ZeroContentLengthError
+    """
+
+    if max_upload is None:
+        max_upload = Config.size.max_size
+
     if "comment" in form:
         if len(form["comment"]) > 1000:
             raise CommentLengthError()
@@ -50,7 +78,7 @@ async def upload_file(form: FormData, max_upload: int = Config.max_size,
     while data:
         await upload_file.seek(next_index)
 
-        data = await upload_file.read(Config.read_size)
+        data = await upload_file.read(Config.size.read_size)
         if data:
             content_length += len(data)
 
@@ -67,7 +95,7 @@ async def upload_file(form: FormData, max_upload: int = Config.max_size,
             )
 
             if (not encrypted_chunk_len and
-                    content_length < Config.read_size):
+                    content_length < Config.size.read_size):
                 break
 
             if not encrypted_chunk_len:
@@ -75,7 +103,7 @@ async def upload_file(form: FormData, max_upload: int = Config.max_size,
 
             await parts.data(e_data)
 
-            next_index += Config.read_size
+            next_index += Config.size.read_size
 
             await asyncio.sleep(0.01)
 
