@@ -38,8 +38,6 @@
             <p>please review the 'download' client before running it, requires python 3.x - <a href="/static/client-download" target="_blank">'download' client</a></p>
         {% endif %}
 
-        <h4>{{ downloads }} total downloads</h4>
-
         <h4>comment</h4>
         {% if comment %}
             <p>everything in the box below was a comment left by the uploader, beware of scams...</p>
@@ -49,6 +47,9 @@
         {% else %}
             <p>no comment left by uploader</p>
         {% endif %}
+    </div>
+    <div class="card-footer text-muted">
+        {{ downloads }} total downloads
     </div>
 </div>
 <div class="card" style="margin-top: 25px;">
