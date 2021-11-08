@@ -116,6 +116,7 @@ Ensure `/admin/` isn't accessible without correct basic auth provided.
 - [aiofiles](https://pypi.org/project/aiofiles/) by Tin Tvrtkovic
 - [asynctest](https://pypi.org/project/asynctest/) by Martin Richard
 - [sphinxcontrib-trio](https://pypi.org/project/sphinxcontrib-trio/) by Nathaniel J. Smith
+- [sphinx-material](https://pypi.org/project/sphinx-material/) by Kevin Sheppard
 - [Sphinx](https://pypi.org/project/Sphinx/) by Georg Brandl
 - [sphinxcontrib-applehelp](https://pypi.org/project/sphinxcontrib-applehelp/) by Georg Brandl
 - [sphinxcontrib-devhelp](https://pypi.org/project/sphinxcontrib-devhelp/) by Georg Brandl
@@ -135,11 +136,10 @@ Ensure `/admin/` isn't accessible without correct basic auth provided.
 - [setuptools](https://pypi.org/project/setuptools/) by Python Packaging Authority
 - [packaging](https://pypi.org/project/packaging/) by Donald Stufft and individual contributors
 - [pyparsing](https://pypi.org/project/pyparsing/) by Paul McGuire
-- [sphinx-material](https://pypi.org/project/sphinx-material/) by Kevin Sheppard
 - [BeautifulSoup](https://pypi.org/project/BeautifulSoup/) by Leonard Richardson
 - [css-html-js-minify](https://pypi.org/project/css-html-js-minify/) by Juan Carlos
 - [lxml](https://pypi.org/project/lxml/) by lxml dev team
-- [captcha](https://pypi.org/project/captcha/) by Hsiaoming Yang
+- [multicolorcaptcha](https://pypi.org/project/multicolorcaptcha/) by Jose Miguel Rios Rubio
 - [Pillow](https://pypi.org/project/Pillow/) by Alex Clark (PIL Fork Author)
 - [uvicorn](https://pypi.org/project/uvicorn/) by Tom Christie
 - [asgiref](https://pypi.org/project/asgiref/) by Django Software Foundation
