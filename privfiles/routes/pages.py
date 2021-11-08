@@ -69,16 +69,6 @@ class StorageAPIPage(HTTPEndpoint):
 
 class SharePage(HTTPEndpoint):
     async def get(self, request: Request):
-        if ("user" in request.session and request.path_params["file_id"] in
-                request.session["user"]):
-            password = request.session["user"][request.path_params["file_id"]]
-            request.session["user"].pop(request.path_params["file_id"])
-
-            request.session["user"] = request.session["user"]
-            print(request.session["user"])
-        else:
-            password = None
-
         result = await Sessions.mongo.files.find_one({
             "file_id": request.path_params["file_id"]
         })
@@ -94,6 +84,11 @@ class SharePage(HTTPEndpoint):
             comment = None
             local_dencrypt = False
             downloads = 0
+
+        password = (
+            request.query_params["user_key"]
+            if "user_key" in request.query_params else None
+        )
 
         return Config.template.TemplateResponse(
             "share.html",

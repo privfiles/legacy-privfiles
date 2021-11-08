@@ -17,9 +17,12 @@ class UploadAPI(HTTPEndpoint):
         if "upload" not in form or not isinstance(form["upload"], UploadFile):
             return error_response("upload fields missing", status_code=422)
 
-        file_id, user_key, content_length = await upload_file(
-            form, request.state.max_upload
-        )
+        file_id = ""
+        user_key = b""
+        content_length = 0
+
+        async for _, file_id, user_key, content_length in upload_file(form, request.state.max_upload):
+            pass
 
         await Sessions.mongo.api.update_one(
             {"username": request.user.display_name},

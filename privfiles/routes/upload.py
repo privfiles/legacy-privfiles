@@ -1,40 +1,60 @@
-from typing import Union
+from typing import Any, AsyncGenerator, Callable, Union
 from starlette.endpoints import HTTPEndpoint
 from starlette.requests import Request
-from starlette.responses import JSONResponse, RedirectResponse
+from starlette.responses import JSONResponse, RedirectResponse, StreamingResponse
 from starlette.datastructures import UploadFile
 
 from ..helpers.upload import upload_file
 from ..errors import (
     CommentLengthError, ContentLengthError, ZeroContentLengthError
 )
-from ..responses import error_response, response
 from ..resources import Sessions, Config
+
+
+async def show_progress(upload: AsyncGenerator) -> AsyncGenerator[str, None]:
+    yield '''<html>
+    <head>
+        <title>privfiles upload</title>
+        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/css/styles.min.css">
+    </head>
+    <body>
+    <h2>Uploading progress</h2>
+    <ul>'''
+
+    try:
+        yield '<li>0.000 MBs</li>'
+
+        user_key = b""
+        file_id = ""
+        async for _, file_id, user_key, content_length in upload:
+            yield f'<li>{round(content_length / 1049000, 3)} MBs</li>'
+    except CommentLengthError:
+        yield '</ul></body></html>'
+        yield '<meta http-equiv="refresh" content="0; URL=/?error=comment"/>'
+    except ContentLengthError:
+        yield '</ul></body></html>'
+        yield '<meta http-equiv="refresh" content="0; URL=/?error=size"/>'
+    except ZeroContentLengthError:
+        yield '</ul></body></html>'
+        yield '<meta http-equiv="refresh" content="0; URL=/?error=file-content"/>'
+    else:
+        yield '</ul></body></html>'
+        yield f'<meta http-equiv="refresh" content="0; URL=/share/{file_id}?user_key={user_key.decode()}"/>'
 
 
 class UploadEncryptFile(HTTPEndpoint):
     async def post(self, request: Request
-                   ) -> Union[JSONResponse, RedirectResponse]:
+                   ) -> Union[JSONResponse, RedirectResponse, StreamingResponse]:
         form = await request.form()
 
-        expects_json = (
-            form["expect_json"] == "true"
-            if "expect_json" in form else False
-        )
-
         if "upload" not in form or not isinstance(form["upload"], UploadFile):
-            return (
-                error_response("fields") if expects_json else
-                RedirectResponse("/?error=fields", status_code=302)
-            )
+            return RedirectResponse("/?error=fields", status_code=302)
 
         if "premium_key" not in request.session:
             if ("captcha_completed" not in request.session
                     or not request.session["captcha_completed"]):
-                return (
-                    error_response("captcha") if expects_json else
-                    RedirectResponse("/?error=captcha", status_code=302)
-                )
+                return RedirectResponse("/?error=captcha", status_code=302)
 
             request.session["captcha_completed"] = False
 
@@ -59,40 +79,9 @@ class UploadEncryptFile(HTTPEndpoint):
 
             max_size = Config.size.premium_size
 
-        try:
-            file_id, user_key, _ = await upload_file(
-                form, local_dencrypt=expects_json, max_upload=max_size
-            )
-        except CommentLengthError:
-            return (
-                error_response("comment") if expects_json else
-                RedirectResponse("/?error=comment", status_code=302)
-            )
-        except ContentLengthError:
-            return (
-                error_response("size") if expects_json else
-                RedirectResponse("/?error=size", status_code=302)
-            )
-        except ZeroContentLengthError:
-            return (
-                error_response("file-content") if expects_json else
-                RedirectResponse("/?error=file-content", status_code=302)
-            )
-
-        if not expects_json:
-            if "user" not in request.session:
-                request.session["user"] = {
-                    file_id: user_key.decode()
-                }
-            else:
-                request.session["user"][file_id] = user_key.decode()
-
-            return RedirectResponse(
-                "/share/" + file_id,
-                status_code=302,
-            )
-        else:
-            return response({
-                "password": user_key.decode(),
-                "file_id": file_id
-            })
+        return StreamingResponse(
+            show_progress(
+                upload_file(form, max_upload=max_size)
+            ),
+            media_type="text/html"
+        )

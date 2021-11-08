@@ -1,5 +1,5 @@
 import asyncio
-from typing import Tuple
+from typing import AsyncGenerator, Tuple
 
 from starlette.datastructures import UploadFile, FormData
 
@@ -19,7 +19,7 @@ from ..errors import (
 
 async def upload_file(form: FormData, max_upload: int = None,
                       local_dencrypt: bool = False,
-                      ) -> Tuple[str, bytes, int]:
+                      ) -> AsyncGenerator[Tuple[bool, str, bytes, int], None]:
     """Used to upload encrypted data.
 
     Parameters
@@ -30,14 +30,16 @@ async def upload_file(form: FormData, max_upload: int = None,
     local_dencrypt : bool, optional
         by default False
 
-    Returns
-    -------
+    Yields
+    ------
+    bool
+        If upload completed
     str
         file_id
     bytes
         fernet key
     int
-        content length
+        content length, will be the current uploaded length if not completed
 
     Raises
     ------
@@ -58,6 +60,8 @@ async def upload_file(form: FormData, max_upload: int = None,
 
     key = Fernet.generate_key()
     fer = Fernet(key)
+    file_id = token_urlsafe(64)
+    user_key = Fernet.generate_key()
 
     upload_file: UploadFile = form["upload"]  # type: ignore
 
@@ -103,6 +107,8 @@ async def upload_file(form: FormData, max_upload: int = None,
 
             await parts.data(e_data)
 
+            yield False, file_id, user_key, content_length
+
             next_index += Config.size.read_size
 
             await asyncio.sleep(0.01)
@@ -126,10 +132,6 @@ async def upload_file(form: FormData, max_upload: int = None,
     else:
         await parts.finish()
 
-    file_id = token_urlsafe(64)
-
-    user_key = Fernet.generate_key()
-
     await Sessions.mongo.files.insert_one({
         "file_id": file_id,
         "real_file_name": fer.encrypt(upload_file.filename.encode()),
@@ -147,4 +149,4 @@ async def upload_file(form: FormData, max_upload: int = None,
         "downloads": 0
     })
 
-    return file_id, user_key, content_length
+    yield True, file_id, user_key, content_length
