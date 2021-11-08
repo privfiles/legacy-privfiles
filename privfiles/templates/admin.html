@@ -1,30 +1,62 @@
 {% extends "base.html" %}
 {% block content %}
 <h3>Admin page</h3>
-{% include 'errors.html' %}
-<h5>Update API account</h5>
-<form action="/admin/account-update" method="post" style="width: 60%;">
-    <input required placeholder="Username" type="text" class="form-control" id="username" name="username">
-    <input placeholder="Data cap (in gb)" class="form-control" type="number" name="datacap" id="datacap">
-    <input placeholder="Max upload (in mb)" class="form-control" type="number" name="maxupload" id="maxupload">
-    <input class="form-control" type="date" name="expires" id="expires">
+<div style="margin-bottom: 2em;" class="btn-group" role="group" aria-label="Basic example">
+    {% for tab_name, tab_ in tabs.items() %}
+        <a href="/admin/?tab={{ tab_name }}" class="btn btn-{% if tab_['active'] %}primary{% else %}secondary{% endif %}" role="button">{{ tab_name }}</a>
+    {% endfor %}
+</div>
 
-    <button class="btn btn-primary" type="submit" style="margin-top: 20px;width: 100%;">update</button>
-</form>
+{% if tabs['manage']['active'] %}
+    {% include 'errors.html' %}
+    <h5>Update API account</h5>
+    <form action="/admin/account-update" method="post" style="width: 60%;">
+        <input required placeholder="Username" type="text" class="form-control" id="username" name="username">
+        <input placeholder="Data cap (in gb)" class="form-control" type="number" name="datacap" id="datacap">
+        <input placeholder="Max upload (in mb)" class="form-control" type="number" name="maxupload" id="maxupload">
+        <input class="form-control" type="date" name="expires" id="expires">
 
-<h5 style="margin-top: 1em;">Update premium key</h5>
-<form action="/admin/premium-update" method="post" style="width: 60%;">
-    <input required placeholder="Key" type="text" class="form-control" id="premium-key" name="premium-key">
-    <input required placeholder="Max uploads" class="form-control" type="number" name="max-uploads" id="max-uploads">
+        <button class="btn btn-primary" type="submit" style="margin-top: 20px;width: 100%;">update</button>
+    </form>
 
-    <button class="btn btn-primary" type="submit" style="margin-top: 20px;width: 100%;">update</button>
-</form>
+    <h5 style="margin-top: 1em;">Update premium key</h5>
+    <form action="/admin/premium-update" method="post" style="width: 60%;">
+        <input required placeholder="Key" type="text" class="form-control" id="premium-key" name="premium-key">
+        <input required placeholder="Max uploads" class="form-control" type="number" name="max-uploads" id="max-uploads">
 
-<h5 style="margin-top: 1em;">Delete upload</h5>
-<form action="/admin/delete-upload" method="post" style="width: 60%;">
-    <input required type="text" placeholder="File ID" name="file-id" id="file-id" class="form-control">
-    <input required type="text" placeholder="Password" name="password" id="password" class="form-control">
+        <button class="btn btn-primary" type="submit" style="margin-top: 20px;width: 100%;">update</button>
+    </form>
 
-    <button class="btn btn-warning" type="submit" style="margin-top: 20px;width: 100%;">delete</button>
-</form>
+    <h5 style="margin-top: 1em;">Delete upload</h5>
+    <form action="/admin/delete-upload" method="post" style="width: 60%;">
+        <input required type="text" placeholder="File ID" name="file-id" id="file-id" class="form-control">
+        <input required type="text" placeholder="Password" name="password" id="password" class="form-control">
+
+        <button class="btn btn-warning" type="submit" style="margin-top: 20px;width: 100%;">delete</button>
+    </form>
+{% elif tabs['files']['active'] %}
+    <table class="table">
+    <caption>List of files</caption>
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">comment</th>
+            <th scope="col">local_dencrypt</th>
+            <th scope="col">downloads</th>
+            <th scope="col">share page</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for file in tabs['files']['result'] %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ file['comment'] }}</td>
+                <td>{{ file['local_dencrypt'] }}</td>
+                <td>{{ file['downloads'] }}</td>
+                <td><a href="/share/{{ file['file_id'] }}" target="_blank">view</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+{% endif %}
 {% endblock %}
