@@ -34,6 +34,8 @@ class PrivFiles(Starlette):
             by default CaptchaSettings()
         mongo_settings : MongoSettings, optional
             by default MongoSettings()
+        size_settings : MongoSettings, optional
+            by default SizeSettings()
         """
 
         self.__backblaze_settings = backblaze_settings
