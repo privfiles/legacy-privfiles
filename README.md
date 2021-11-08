@@ -24,6 +24,8 @@ Source code for the onion service: `l3n6v6dm63frml22tlmzacnasvp7co7wylu4hhcs34uk
 [community edition](https://www.mongodb.com/try/download/community)
 ### Install python requirements
 `pip3 install -r requirements.txt`
+## Install [multicolorcaptcha](https://pypi.org/project/multicolorcaptcha/) requirements
+`sudo apt-get install libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python3-tk`
 ### Nginx
 - [Restricting Access to Admin Page with Nginx](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/)
 - [Uvicorn deployment](https://www.uvicorn.org/deployment/)
