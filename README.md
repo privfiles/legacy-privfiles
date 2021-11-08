@@ -35,7 +35,13 @@ server {
 
 	chunked_transfer_encoding on;
 
+	access_log off;
+	access_log /dev/null;
+
 	location ~ /admin {
+		access_log off;
+		access_log /dev/null;
+
 		auth_basic "privfiles admin";
 		auth_basic_user_file /etc/apache2/.htpasswd;
 
@@ -45,6 +51,9 @@ server {
 	}
 
 	location / {
+		access_log off;
+		access_log /dev/null;
+
 		proxy_redirect off;
 		proxy_buffering off;
 		proxy_pass http://uvicorn;
