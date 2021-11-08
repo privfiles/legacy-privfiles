@@ -52,18 +52,18 @@ class AdminDeleteUpload(HTTPEndpoint):
         form = await request.form()
 
         if "password" not in form or "file-id" not in form:
-            return RedirectResponse("/admin?error=fields", status_code=302)
+            return RedirectResponse("/admin/?error=fields", status_code=302)
 
         try:
             await delete_upload(form["password"], form["file-id"])
         except PasswordError:
             return RedirectResponse(
-                "/admin?error=password-or-link-or-deleted", status_code=302
+                "/admin/?error=password-or-link-or-deleted", status_code=302
             )
         except FileIdError:
-            return RedirectResponse("/admin?error=file-id", status_code=302)
+            return RedirectResponse("/admin/?error=file-id", status_code=302)
         else:
-            return RedirectResponse("/admin", status_code=302)
+            return RedirectResponse("/admin/", status_code=302)
 
 
 class AdminUpdateKey(HTTPEndpoint):
