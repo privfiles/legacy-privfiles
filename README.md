@@ -1,16 +1,3 @@
-# Privfiles - Encrypted file storage using Fernet with zero Javascript
-
-## Ideas / Todo
-- Add unit tests
-- Add flake8, pyright & unit test workflow
-- Implement site message / canary updating via the admin panel (PGP still handled locally)
-- Add css to hide 'complete captcha' button once click
-- Allow custom [passwords with fernet](https://cryptography.io/en/latest/fernet/#using-passwords-with-fernet) or maybe encrypted password storing under an user account?
-- Consider adding optional javascript for local browser encryption? Maybe a more soild GUI applicaiton for privfiles?
-	- Issue with browser side encryption is we'd have to import a locally hosted version of [openpgpjs](https://github.com/openpgpjs/openpgpjs), what could be edited to contain malicious code & would be diffcult for a user to validate it each time to ensure it doesn't. A lot safer using pypi packages for a local python script what aren't distributed by us.
-- Account system? Instead of generating multiple keys for the storage api or premium
-- Monero integration? Instead of requiring emails
-
 ## Previews
 ![home page](https://i.imgur.com/LouGjvI.png)
 ![api page](https://i.imgur.com/SUHwwWU.png)
